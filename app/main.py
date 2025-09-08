@@ -30,6 +30,7 @@ class MRPUsage(BaseModel):
     used_fields: List[str]
     suggested_fields: List[str]
     suggested_statement: Optional[str] = None
+    snippet: Optional[str] = None
 
 
 class NoteContext(BaseModel):
@@ -52,7 +53,11 @@ def summarize_context(ctx: NoteContext) -> dict:
 
 
 # ---- LangChain Prompt ----
-SYSTEM_MSG = "You are a precise ABAP reviewer familiar with SAP Note 2268085 who outputs strict JSON only."
+SYSTEM_MSG = """You are a precise ABAP reviewer familiar with SAP Note 2268085 who outputs strict JSON only."
+You are evaluating a system context related to SAP OSS Note 2268085. We provide:
+- system context
+- list of detected changes in code (with offending code snippets when available)
+"""
 
 USER_TEMPLATE = """
 You are evaluating a system context related to SAP OSS Note 2268085 (MRP Live on SAP HANA - MD01N).
